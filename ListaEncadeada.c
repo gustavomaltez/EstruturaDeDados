@@ -9,17 +9,22 @@ typedef struct{
 Node *firstPosition = NULL;
 int listLength = 0;
 
-void addNewValue(int value){
+void addNewValue(int value, int position){
 
     Node *MyNewNode = malloc(sizeof(Node));
     MyNewNode->value = value;
     MyNewNode->prox = NULL;
 
-    if(listLength == 0){
-        firstPosition = novo;
+    if(listLength == 0 && position == 0){ //if list is empty
+        firstPosition = MyNewNode;
         listLength++;
-    }else{
-
+    }else if(listLength > 0 && position <= listLength){
+        //Add value on list start
+        if(position == 0){
+            MyNewNode->prox = firstPosition;
+            firstPosition = MyNewNode;
+            listLength++;
+        }
     }
 }
 
