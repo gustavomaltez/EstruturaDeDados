@@ -10,21 +10,22 @@ Node *firstPosition = NULL;
 int listLength = 0;
 
 void addNewValue(int value){
-    if(listLength == 0){
 
+    Node *MyNewNode = malloc(sizeof(Node));
+    MyNewNode->value = value;
+    MyNewNode->prox = NULL;
+
+    if(listLength == 0){
+        firstPosition = novo;
+        listLength++;
     }else{
-        
+
     }
 }
 
 int main()
 {
-    Node *MyNewNode = malloc(sizeof(Node));
-    MyNewNode->value = 123;
-    MyNewNode->prox = NULL;
-    printf("Value is: %d\n",MyNewNode->value);
-
-    firstPosition = novo;
+    
 
     return 0;
 }
