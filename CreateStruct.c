@@ -1,15 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct No{
+// struct No{
+//     int valor;
+//     struct No *prox;
+// };
+
+//Usando typedef
+typedef struct{
     int valor;
-    struct no *prox;
-};
+    struct No *prox;
+}No;
 
 int main()
 {
-    struct No *MyNewNode = malloc(sizeof(struct No));
+    No *MyNewNode = malloc(sizeof(No));
+    
     MyNewNode->valor = 123;
+    MyNewNode->prox  =  NULL;
     printf("Value is: %d",MyNewNode->valor);
     return 0;
 }
