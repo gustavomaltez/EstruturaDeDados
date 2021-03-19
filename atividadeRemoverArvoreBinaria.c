@@ -1,3 +1,6 @@
+// Atividade remover na árvore binária de busca
+// Aluno: Gustavo Moraes Maltez
+// Matrícula: 497273
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,33 +17,33 @@ NO *raiz = NULL;
 NO *busca(int x, NO *aux)
 {
     if (aux == NULL)
-    {
-        return NULL; //vazia
+    { //Árvore vazia
+        return NULL;
     }
     else if (x == aux->chave)
-    {
-        return aux; //encontrei :D
+    { // Valor encontrado
+        return aux;
     }
     else if (x < aux->chave)
-    { //buscar no lado esq
+    { //Busca no lado esquerdo
         if (aux->esq != NULL)
         {
             return busca(x, aux->esq);
         }
         else
-        {               //esq esta vazia
-            return aux; //pai do elemento que não foi encontrado
+        { //Lado esquerdo está vazio (retorna o pai do elemento não encontrado)
+            return aux;
         }
     }
     else
-    { //buscar no lado dir
+    { //Busca no lado direito
         if (aux->dir != NULL)
         {
             return busca(x, aux->dir);
         }
         else
-        {               //dir esta vazia
-            return aux; //pai do elemento que não foi encontrado
+        { //Lado direito está vazio (retorna o pai do elemento não encontrado)
+            return aux;
         }
     }
 }
@@ -50,7 +53,7 @@ void add(int x)
     NO *resp = busca(x, raiz);
 
     if (resp == NULL || resp->chave != x)
-    { // vazia ou eu posso adicionar
+    { // Árvore está vazia ou valor não existe na árvore (pode adicionar)
         NO *novo = malloc(sizeof(NO));
         novo->chave = x;
         novo->pai = resp;
@@ -58,11 +61,11 @@ void add(int x)
         novo->dir = NULL;
 
         if (resp == NULL)
-        { //add na raiz
+        { //Adiciona na raiz
             raiz = novo;
         }
         else
-        {
+        { //Verifica se é para adicionar no lado esquerdo ou direito
             if (x < resp->chave)
             {
                 resp->esq = novo;
@@ -74,17 +77,18 @@ void add(int x)
         }
     }
     else
-    { //nao posso deixar add novamente pq neste caso
-        //havera chaves duplicadas
-        printf("Add inválida. Chave duplicada");
+    { //Caso a chave já exista, não deixa adicionar na árvore (retorna erro)
+        printf("[ERRO] Nao eh possivel adicionar! Chave ja existe!");
     }
 }
 
 NO *remover(NO *raiz, int valorARemover)
 {
 
-    // Faz a busca na arvore
+    //Faz a busca na árvore
     NO *aux = busca(valorARemover, raiz);
+    
+    //Cria um nó que vai armazenar o nó removido a ser retornado
     NO *noRemovido = malloc(sizeof(NO));
 
     if (aux == NULL)
@@ -97,18 +101,18 @@ NO *remover(NO *raiz, int valorARemover)
         if (aux->chave == valorARemover)
         { //Caso a chave for igual o valor a remover, então ele existe
 
+          
             //Verifica o se o nó é uma folha
             if (aux->esq == NULL && aux->dir == NULL)
             {
-                
-                //Verifica se filho (aux) está sendo apontado pelo ponteiro esq ou dir
+                //Verifica se o filho (aux) está sendo apontado pelo ponteiro esq ou dir
                 // E posteriormente define o ponteiro para NULL
                 if (valorARemover > aux->pai->chave)
                 {
                     aux->pai->dir = NULL;
                 }
                 else if (valorARemover < aux->pai->chave)
-                {
+                {   
                     aux->pai->esq = NULL;
                 }
 
@@ -119,10 +123,10 @@ NO *remover(NO *raiz, int valorARemover)
                 free(aux);
             }
             else //O Nó não é uma folha
-            {   
+            {
                 if (aux->esq != NULL && aux->dir == NULL)
-                { //Nó possui um filho do lado esquerdo
-
+                { //Nó possui apenas filho no lado esquerdo
+                    
                     //Verifica se os filhos do nó devem ir para o lado esquerdo ou direito do pai
                     if (aux->chave < aux->pai->chave)
                     {
@@ -141,8 +145,8 @@ NO *remover(NO *raiz, int valorARemover)
                 }
 
                 if (aux->esq == NULL && aux->dir != NULL)
-                { //Nó possui um filho do lado direito
-
+                { //Nó possui apenas filho no lado direito
+                    
                     //Verifica se os filhos do nó devem ir para o lado esquerdo ou direito do pai
                     if (aux->chave < aux->pai->chave)
                     {
@@ -162,7 +166,7 @@ NO *remover(NO *raiz, int valorARemover)
 
                 if (aux->esq != NULL && aux->dir != NULL)
                 { //Nó tem dois filhos
-
+                    
                     //Busca o menor dos maiores
                     NO *m = aux->dir;
 
@@ -170,12 +174,11 @@ NO *remover(NO *raiz, int valorARemover)
                     {
                         m = m->esq;
                     }
-                    
+             
                     //Faz uma cópia das informações de aux para nó removido
                     //Essa etapa é importante pois fazendo apenas noRemovido = aux
                     //Ao dar um free(aux), estaremos limpando também as informações de noRemovido
                     memcpy(noRemovido, aux, sizeof(NO));
-
 
                     //Verifica o se o nó é uma folha
                     if (m->esq == NULL && m->dir == NULL)
@@ -190,20 +193,20 @@ NO *remover(NO *raiz, int valorARemover)
                         {
                             m->pai->esq = NULL;
                         }
-
                     }
-                    
-                    if (m->esq == NULL && m->dir != NULL)//Nó possui um filho do lado direito
-                    { 
+
+                    if (m->esq == NULL && m->dir != NULL) 
+                    {//Nó possui um filho do lado direito
                         // Nesse caso, o m->chave sempre vai ser maior que o m->pai->chave
                         // Visto que estamos buscando o menor dos MAIORES logo, se é o menor
                         // dos MAIORES então m->chave sempre vai ser MAIOR que m->pai->chave
                         m->pai->dir = m->dir;
                     }
-                    
+
                     //Substitui o nó a ser removido pelo menor dos maiores
                     aux->chave = m->chave;
 
+                    //Remove o nó removido da memória
                     free(m);
                 }
             }
@@ -222,14 +225,13 @@ NO *remover(NO *raiz, int valorARemover)
 NO *busca_arvore(int x)
 {
     NO *resp = busca(x, raiz);
+
     if (resp == NULL)
-    {
-        //valor nao foi encontrado
+    {  //Valor não foi encontrado
         return NULL;
     }
     else
-    {
-        //encontrei :D
+    { //Valor encontrado
         if (resp->chave == x)
         {
             return resp;
@@ -264,20 +266,41 @@ int main()
     add(9);
     add(10);
     add(6);
-    add(13);
     add(30);
     add(20);
     add(25);
     add(44);
     add(27);
+    add(2);
+    add(13);
+    add(99);
+    printf("Valores: ");
     in_ordem(raiz);
-
     
     printf("\nREMOVIDO: %d", remover(raiz, 8)->chave);
     printf("\nREMOVIDO: %d", remover(raiz, 25)->chave);
     printf("\nREMOVIDO: %d", remover(raiz, 6)->chave);
     printf("\nREMOVIDO: %d", remover(raiz, 13)->chave);
-    printf("\n");
+    printf("\nREMOVIDO: %d", remover(raiz, 99)->chave);
+
+    printf("\nNovos Valores: ");
+    in_ordem(raiz);
+    
+    printf("\nADICIONADO: 13\n");
+    add(13);
+    printf("ADICIONADO: 84\n");
+    add(84);
+    printf("ADICIONADO: 14\n");
+    add(14);
+
+    printf("\nNovos Valores: ");
+    in_ordem(raiz);
+    
+    printf("\nREMOVIDO: %d", remover(raiz, 13)->chave);
+    printf("\nREMOVIDO: %d", remover(raiz, 84)->chave);
+    printf("\nREMOVIDO: %d", remover(raiz, 14)->chave);
+
+    printf("\nNovos Valores: ");
     in_ordem(raiz);
     return 0;
 }
