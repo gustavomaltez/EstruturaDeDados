@@ -281,7 +281,7 @@ int main()
     printf("\nREMOVIDO: %d", remover(raiz, 25)->chave);
     printf("\nREMOVIDO: %d", remover(raiz, 6)->chave);
     printf("\nREMOVIDO: %d", remover(raiz, 13)->chave);
-    printf("\nREMOVIDO: %d", remover(raiz, 99)->chave);
+    printf("\nREMOVIDO: %d\n", remover(raiz, 99)->chave);
 
     printf("\nNovos Valores: ");
     in_ordem(raiz);
@@ -290,15 +290,12 @@ int main()
     add(13);
     printf("ADICIONADO: 84\n");
     add(84);
-    printf("ADICIONADO: 14\n");
-    add(14);
 
     printf("\nNovos Valores: ");
     in_ordem(raiz);
     
     printf("\nREMOVIDO: %d", remover(raiz, 13)->chave);
     printf("\nREMOVIDO: %d", remover(raiz, 84)->chave);
-    printf("\nREMOVIDO: %d", remover(raiz, 14)->chave);
 
     printf("\nNovos Valores: ");
     in_ordem(raiz);
